@@ -24,7 +24,7 @@ object SparkSqlHiveTest {
     import spark.sql
     sql("show tables").show();
     sql("CREATE TABLE IF NOT EXISTS src3 (key INT, value STRING)")
-    sql("LOAD DATA INPATH 'hdfs://bigdata01:9000/testdata/resources/kv1.txt' INTO TABLE src3")
+    sql("LOAD DATA INPATH 'hdfs://miao.com:9000/testdata/resources/kv1.txt' INTO TABLE src3")
     
     //使用HiveQL语言查询
     sql("SELECT * FROM src2").show()

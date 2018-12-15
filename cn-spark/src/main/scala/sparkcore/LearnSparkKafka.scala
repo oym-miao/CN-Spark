@@ -13,11 +13,11 @@ object LearnSparkKafka {
 //        conf.setMaster("local[3]")
 
     val sc =new SparkContext(conf)
-    val textFileRDD=sc.textFile("hdfs://bigdata01:9000/sparkdata5")
+    val textFileRDD=sc.textFile("hdfs://miao.com:9000/sparkdata5")
     val mapRDD=textFileRDD.map(line => line.toUpperCase())
     mapRDD.foreachPartition(partition =>{
       val props = new Properties()
-      props.put("bootstrap.servers", "bigdata01:9092")
+      props.put("bootstrap.servers", "miao.com:9092")
       props.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer")
       props.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer")
       val producer = new KafkaProducer[String,String](props)

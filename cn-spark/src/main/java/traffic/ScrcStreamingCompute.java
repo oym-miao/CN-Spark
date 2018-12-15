@@ -56,7 +56,7 @@ public class ScrcStreamingCompute {
         });
         spark.sparkContext().setLogLevel("ERROR");
         JavaSparkContext jsc=new JavaSparkContext(spark.sparkContext());
-        String brokers = "bigdata01:9092";
+        String brokers = "miao.com:9092";
         String topics = "cnwTopic";
 
         JavaStreamingContext ssc = new JavaStreamingContext(jsc, Durations.seconds(6));

@@ -15,7 +15,7 @@ public class TpcProducer {
 		//创建一个Properties对象，用于存储连接kafka所需要的配置信息
 		Properties kafkaProps = new Properties(); 
 		//配置kafka集群地址--如果此处使用主机名bigdata01，需要在当前电脑的hosts文件中配置映射
-		kafkaProps.put("bootstrap.servers", "bigdata01:9092");
+		kafkaProps.put("bootstrap.servers", "miao.com:9092");
 		//向kafka集群发送消息,除了消息值本身,还包括key信息,key信息用于消息在partition之间均匀分布。
 		//发送消息的key,类型为String,使用String类型的序列化器
 		kafkaProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");

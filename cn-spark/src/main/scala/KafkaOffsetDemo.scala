@@ -15,7 +15,7 @@ object KafkaOffsetDemo {
     val ssc = new StreamingContext(sparkConf, Seconds(1))
     ssc.sparkContext.setLogLevel("ERROR")
     val kafkaParams = Map[String, Object](
-      "bootstrap.servers" -> "bigdata01:9092", //kafka集群地址
+      "bootstrap.servers" -> "miao.com:9092", //kafka集群地址
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
       "group.id" -> "KafkaOffsetDemo", //消费者组名

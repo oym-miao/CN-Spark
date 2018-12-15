@@ -1,26 +1,44 @@
 package sparkcore
 
+import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{SparkConf, SparkContext}
 
 object LearnSparkHDFS {
   def main(args: Array[String]): Unit = {
+    //System.setProperty("hadoop.home.dir", "D:\\HADOOP_HOME\\hadoop-2.5.0")
     val conf=new SparkConf()
-    conf.setAppName("learnTextFile")
-    conf.setMaster("local[3]")
+    conf.setAppName("LearnSparkHDFS")
+   //conf.setMaster("local[3]")
+
+   conf.setMaster("spark://miao.com:7077")
 
     val sc =new SparkContext(conf)
 
     /**
       * 在向HDFS写入数据时，当前RDD的分区数，就是HDFS上的文件数。
       * 为了避免HDFS上生成大量的小文件，可以对RDD进行reparation，然后再saveAsTextFile。
+      * 集群运行时  这个路径应该是Linux上的路径。真实项目中，这个路径应该是HDFS上路径
       */
-    //    val textFileRDD=sc.textFile("in/README.md")
-//    textFileRDD.map(line => line.toUpperCase()).repartition(5).saveAsTextFile("hdfs://bigdata01:9000/sparkdata5")
+
+    //将本地文件保存到本地指定的目录
+    //textFileRDD.map(line => line.toUpperCase()).repartition(3).saveAsTextFile("file:///D:\\MyProject\\spark\\cn-spark\\out/hashPartition4")
+    // val textFileRDD=sc.textFile("in/people.json")
+
+    //StorageLevel
+
+    //将Linux上的文件保存到hdfs上面,注意这个文件在每个节点都要有，并且路径一致
+    val textFileRDD=sc.textFile("/home/oym/apps/people.json")
+    println(textFileRDD.count())
+    textFileRDD.map(line => line.toUpperCase()).repartition(3).saveAsTextFile("hdfs://miao.com:8082/sparkdata5")
+
+
+
+
     /**
       *从HDFS上读取有5个分区数据，生成的RDD的分区数为5.
       * 注意：HDFS上一个小文件也是一个block。
       */
-    val textFileRDD5=sc.textFile("hdfs://bigdata01:9000/sparkdata5")
-    println("textFileRDD5 partition size:"+textFileRDD5.partitions.size)
+//    val textFileRDD5=sc.textFile("hdfs://bigdata01:9000/sparkdata5")
+//    println("textFileRDD5 partition size:"+textFileRDD5.partitions.size)
   }
 }
