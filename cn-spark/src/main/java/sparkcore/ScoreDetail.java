@@ -7,8 +7,23 @@ public class ScoreDetail implements Serializable {
     private String subject;
     private Float score;
 
+    private int subjectCount=1;
+
     public ScoreDetail(){
 
+    }
+
+    public int getSubjectCount() {
+        return subjectCount;
+    }
+
+    public void setSubjectCount(int subjectCount) {
+        this.subjectCount = subjectCount;
+    }
+
+    public ScoreDetail(Float score, int subjectCount) {
+        this.score = score;
+        this.subjectCount = subjectCount;
     }
 
     public ScoreDetail(String studentName, String subject, Float score) {

@@ -15,6 +15,7 @@ public class learnCombineByKeyJava {
         SparkConf conf=new SparkConf().setAppName("learnCountByValueJava").setMaster("local[*]");
         JavaSparkContext jsc=new JavaSparkContext(conf);
 
+        /*计算每个人的平均值*/
         List<Tuple2<String, ScoreDetail>> tuple = Arrays.asList(
                 new Tuple2<>("A", new ScoreDetail("A","Math",Float.valueOf(98))),
                 new Tuple2<>("A", new ScoreDetail("A","English",Float.valueOf(88))),
@@ -23,7 +24,7 @@ public class learnCombineByKeyJava {
                 new Tuple2<>("C",new ScoreDetail("C","Math",Float.valueOf(90))),
                 new Tuple2<>("C",new ScoreDetail("C","English",Float.valueOf(80))),
                 new Tuple2<>("D",new ScoreDetail("D","Math",Float.valueOf(91))),
-                new Tuple2<>("D",new ScoreDetail("D","English",Float.valueOf(80)))
+                new Tuple2<>("D",new ScoreDetail("D","Chinese",Float.valueOf(80)))
         );
 
         JavaPairRDD<String, ScoreDetail> stringScoreDetailJavaPairRDD = jsc.parallelizePairs(tuple);
@@ -31,13 +32,17 @@ public class learnCombineByKeyJava {
         JavaPairRDD<String, ScoreDetail> reduceByKeyRDD = stringScoreDetailJavaPairRDD.reduceByKey(new Function2<ScoreDetail, ScoreDetail, ScoreDetail>() {
             @Override
             public ScoreDetail call(ScoreDetail v1, ScoreDetail v2) throws Exception {
-                return new ScoreDetail(v1.getStudentName(),v1.getSubject()+","+v2.getSubject(),v1.getScore()+v2.getScore());
+                //统计 课程总数跟总分数，这里课程先拼接起来，后面用的时候再进行截取,取出个数，就是课程总数了
+               // return new ScoreDetail(v1.getStudentName(),v1.getSubject()+","+v2.getSubject(),v1.getScore()+v2.getScore());
+                return new ScoreDetail(v1.getScore()+v2.getScore(),v1.getSubjectCount()+1);
+
             }
         });
         reduceByKeyRDD.foreach(new VoidFunction<Tuple2<String, ScoreDetail>>() {
             @Override
             public void call(Tuple2<String, ScoreDetail> t2) throws Exception {
-                System.out.println(t2._1+":"+(t2._2.getScore()/(t2._2.getSubject().split(",").length)));
+                //System.out.println(t2._1+":"+(t2._2.getScore()/(t2._2.getSubject().split(",").length)));
+                System.out.println(t2._1+":"+(t2._2.getScore()/(t2._2.getSubjectCount())));
             }
         });
 
@@ -45,12 +50,14 @@ public class learnCombineByKeyJava {
         Function<ScoreDetail, Tuple2<Float, Integer>> createCombiner = new Function<ScoreDetail, Tuple2<Float, Integer>>() {
             @Override
             public Tuple2<Float, Integer> call(ScoreDetail scoreDetail) throws Exception {
+                //第一个参数是分数，第二个参数是给的课程数
                 return new Tuple2<>(scoreDetail.getScore(), 1);
             }
         };
         Function2<Tuple2<Float, Integer>, ScoreDetail, Tuple2<Float, Integer>> mergeValue = new Function2<Tuple2<Float, Integer>, ScoreDetail, Tuple2<Float, Integer>>() {
             @Override
             public Tuple2<Float, Integer> call(Tuple2<Float, Integer> tp, ScoreDetail scoreDetail) throws Exception {
+                //先把科目的分数相加，再把科目的数量相加
                 return new Tuple2<>(tp._1 + scoreDetail.getScore(), tp._2 + 1);
             }
         };
@@ -74,12 +81,21 @@ public class learnCombineByKeyJava {
          * 多的分区都有对应同一个key的累加器， 就需要使用用户提供的 mergeCombiners() 将各个分区的结果进行合并。
          * new Tuple2<>(tp1._1 + tp2._1, tp1._2 + tp2._2);
          */
-        JavaPairRDD<String, Tuple2<Float,Integer>> combineBykeyRDD =stringScoreDetailJavaPairRDD.combineByKey(createCombiner,mergeValue,mergeCombiners);
+        /*JavaPairRDD<String, Tuple2<Float,Integer>> combineBykeyRDD =stringScoreDetailJavaPairRDD.combineByKey(createCombiner,mergeValue,mergeCombiners);
 
         //输出
+        *//*
+            D 85.5
+            A 93.0
+            C 85.0
+            B 76.5
+         *//*
         Map<String, Tuple2<Float, Integer>> stringTuple2Map = combineBykeyRDD.collectAsMap();
         for ( String key:stringTuple2Map.keySet()) {
             System.out.println(key+" "+stringTuple2Map.get(key)._1/stringTuple2Map.get(key)._2);
-        }
+        }*/
+
+
+
     }
 }
