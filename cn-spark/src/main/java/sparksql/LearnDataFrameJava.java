@@ -26,6 +26,7 @@ public class LearnDataFrameJava {
 //        listBeanDF.show();
 //        listBeanDF.printSchema();
 
+          //RDD跟dataFrame的转换
 //        JavaSparkContext jsc=new JavaSparkContext(spark.sparkContext());
 //        JavaRDD<Person> personRDD = jsc.parallelize(data);
 //        Dataset<Row> rddBeanDF=spark.createDataFrame(personRDD, Person.class);

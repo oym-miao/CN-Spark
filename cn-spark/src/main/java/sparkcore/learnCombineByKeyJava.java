@@ -29,6 +29,8 @@ public class learnCombineByKeyJava {
 
         JavaPairRDD<String, ScoreDetail> stringScoreDetailJavaPairRDD = jsc.parallelizePairs(tuple);
 
+
+
         JavaPairRDD<String, ScoreDetail> reduceByKeyRDD = stringScoreDetailJavaPairRDD.reduceByKey(new Function2<ScoreDetail, ScoreDetail, ScoreDetail>() {
             @Override
             public ScoreDetail call(ScoreDetail v1, ScoreDetail v2) throws Exception {
@@ -51,13 +53,14 @@ public class learnCombineByKeyJava {
             @Override
             public Tuple2<Float, Integer> call(ScoreDetail scoreDetail) throws Exception {
                 //第一个参数是分数，第二个参数是给的课程数
+                // (因为计算平均值需要这两个字段的总和，所以这里传了这两个字段，又因为同一个key的每一条数据中课程名字是不一样的,所以默认给1)
                 return new Tuple2<>(scoreDetail.getScore(), 1);
             }
         };
         Function2<Tuple2<Float, Integer>, ScoreDetail, Tuple2<Float, Integer>> mergeValue = new Function2<Tuple2<Float, Integer>, ScoreDetail, Tuple2<Float, Integer>>() {
             @Override
             public Tuple2<Float, Integer> call(Tuple2<Float, Integer> tp, ScoreDetail scoreDetail) throws Exception {
-                //先把科目的分数相加，再把科目的数量相加
+                //先把科目的分数相加，再把科目的数量相加  tp里面的是累加的数据，scoreDetail是新传入的数据,下面的也是如此!!
                 return new Tuple2<>(tp._1 + scoreDetail.getScore(), tp._2 + 1);
             }
         };

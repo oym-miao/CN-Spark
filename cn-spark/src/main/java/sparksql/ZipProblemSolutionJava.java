@@ -29,7 +29,7 @@ public class ZipProblemSolutionJava {
 		});
 		//2、创建名为Zips的case class或者javaBean，用于将第一步创建的DF转换为DS
 		Encoder<Zips> zipsEncoder = Encoders.bean(Zips.class);
-		Dataset<Zips> zipDS = zipDF.as(zipsEncoder);
+		Dataset<Zips> zipDS = (Dataset<Zips>) zipDF.as(zipsEncoder);
 		//3、显示DS中的数据
 		zipDS.show();
 		zipDS.createOrReplaceTempView("zips");

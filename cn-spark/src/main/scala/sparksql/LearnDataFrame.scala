@@ -15,6 +15,7 @@ object LearnDataFrame {
     //导入隐式转换工具包
     import spark.implicits._
 
+    //这个集合里面有两个tuple
 //    val seq=Seq(
 //      ("zhangsan",10,"beijing",java.sql.Date.valueOf("2008-01-01")),
 //      ("lisi",20,"shanghai",java.sql.Date.valueOf("1998-01-01"))
@@ -39,33 +40,45 @@ object LearnDataFrame {
 //    personDF.createOrReplaceTempView("person")
 //    spark.sql("select * from person where age>10").show()
 
-//    val employeeDF=spark.read.json("D:\\idea2018workspace\\cnw_spark_svn\\in\\people.json")
+
+
+
+//    val employeeDF=spark.read.json("D:\\cainiaolearn\\spark\\learnSpark\\CN-Spark\\cn-spark\\in\\people.json")
 //    employeeDF.show()
 //    employeeDF.printSchema()
 //    employeeDF.createOrReplaceTempView("employee")
 
+
+
+
     import org.apache.spark.sql.functions.{col, column}
     import org.apache.spark.sql.functions.expr
     val df = spark.read.format("json") .load("in/2015-summary.json")
-//    df.printSchema()
-//    df.select(col("DEST_COUNTRY_NAME")).show();
-//    df.select("DEST_COUNTRY_NAME").show()
-//
-//    df.createOrReplaceTempView("flight")
-//    spark.sql("SELECT  DEST_COUNTRY_NAME  FROM  flight LIMIT 2").show()
-//
-//    df.select("DEST_COUNTRY_NAME","DEST_COUNTRY_NAME")
-//
-//
-//    df.select(expr("DEST_COUNTRY_NAME AS destination")).show(2)
-//    spark.sql("SELECT DEST_COUNTRY_NAME as destination FROM flight").show(2)
-//
+    df.printSchema()
+    df.select(col("DEST_COUNTRY_NAME")).show();
+    df.select("DEST_COUNTRY_NAME").show()
+
+    df.createOrReplaceTempView("flight")
+    spark.sql("SELECT  DEST_COUNTRY_NAME  FROM  flight LIMIT 2").show()
+
+    df.select("DEST_COUNTRY_NAME","DEST_COUNTRY_NAME")
+
+
+    df.select(expr("DEST_COUNTRY_NAME AS destination")).show(2)
+    spark.sql("SELECT DEST_COUNTRY_NAME as destination FROM flight").show(2)
+
+
+
+      //in scala
 //    import org.apache.spark.sql.functions.lit
 //    df.select(expr("*"), lit(1).as("One")).show(2)
+    //in sql
 //    spark.sql("SELECT *, 1 as One FROM flight LIMIT 2")
 
+      //新增一列 withinCountry 而这个列的值是根据两个国家的名字是否相等来返回的
 //    df.withColumn("withinCountry", expr("ORIGIN_COUNTRY_NAME == DEST_COUNTRY_NAME")).show()
-    val df2=df.withColumnRenamed("DEST_COUNTRY_NAME", "dest");
-    df2.printSchema()
+
+    //  val df2=df.withColumnRenamed("DEST_COUNTRY_NAME", "dest");
+   // df2.printSchema()
   }
 }
