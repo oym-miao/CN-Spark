@@ -63,14 +63,14 @@ limitations under the License.
     <!--hive元数据服务的地址-->
     <property>
         <name>hive.metastore.uris</name>
-        <value>thrift://192.168.91.101:9083</value>
+        <value>thrift://192.168.91.100:9083</value>
     </property>
 
     <!-- #hive数据存储在hdfs上的目录-->
 
     <property>
         <name>hive.metastore.warehouse.dir</name>
-        <value>hdfs://192.168.91.101:8082/user/hive/warehouse</value>
+        <value>hdfs://192.168.91.100:8082/user/hive/warehouse</value>
         <description>location of default database for the warehous</description>
     </property>
 
@@ -78,7 +78,9 @@ limitations under the License.
     <property>
         <name>datanucleus.schema.autoCreateAll</name>
         <value>true</value>
-    </property>-->
+    </property>
+
+
 	<!--hue跟hive的集成
 	<property>
       		<name>hive.server2.thrift.port</name>
