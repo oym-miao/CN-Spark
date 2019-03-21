@@ -2,6 +2,9 @@ package sparkcore;
 
 import java.io.Serializable;
 
+/*
+* 如果用到java bean一定要实现Serializable
+* */
 public class ScoreDetail implements Serializable {
     private String studentName;
     private String subject;

@@ -15,7 +15,7 @@ public class learnCombineByKeyJava {
         SparkConf conf=new SparkConf().setAppName("learnCountByValueJava").setMaster("local[*]");
         JavaSparkContext jsc=new JavaSparkContext(conf);
 
-        /*计算每个人的平均值*/
+        /*计算每个人的平均值，由于是要计算每个人的平均值，所以使用人的名字来做bykey就行了*/
         List<Tuple2<String, ScoreDetail>> tuple = Arrays.asList(
                 new Tuple2<>("A", new ScoreDetail("A","Math",Float.valueOf(98))),
                 new Tuple2<>("A", new ScoreDetail("A","English",Float.valueOf(88))),
@@ -84,19 +84,19 @@ public class learnCombineByKeyJava {
          * 多的分区都有对应同一个key的累加器， 就需要使用用户提供的 mergeCombiners() 将各个分区的结果进行合并。
          * new Tuple2<>(tp1._1 + tp2._1, tp1._2 + tp2._2);
          */
-        /*JavaPairRDD<String, Tuple2<Float,Integer>> combineBykeyRDD =stringScoreDetailJavaPairRDD.combineByKey(createCombiner,mergeValue,mergeCombiners);
+        JavaPairRDD<String, Tuple2<Float,Integer>> combineBykeyRDD =stringScoreDetailJavaPairRDD.combineByKey(createCombiner,mergeValue,mergeCombiners);
 
         //输出
-        *//*
-            D 85.5
-            A 93.0
-            C 85.0
-            B 76.5
-         *//*
+
+//            D 85.5
+//            A 93.0
+//            C 85.0
+//            B 76.5
+
         Map<String, Tuple2<Float, Integer>> stringTuple2Map = combineBykeyRDD.collectAsMap();
         for ( String key:stringTuple2Map.keySet()) {
             System.out.println(key+" "+stringTuple2Map.get(key)._1/stringTuple2Map.get(key)._2);
-        }*/
+        }
 
 
 

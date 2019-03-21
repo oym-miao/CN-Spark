@@ -6,6 +6,16 @@ import org.apache.spark.{SparkConf, SparkContext}
 object learnTextFile {
   def main(args: Array[String]): Unit = {
     val conf=new SparkConf()
+
+    /**
+      *
+      * local:一个线程
+      * local[*]:服务器core数量的相差
+      * local[4]:4个线程
+      *
+      */
+
+
     conf.setAppName("learnTextFile").setMaster("local")
 //    conf.setMaster("local[*]")
 //    conf.set("spark.executor.memory","500m")
@@ -14,13 +24,22 @@ object learnTextFile {
 //    sc.setLogLevel("ERROR")
 
 
-//   val textFileRDD=sc.textFile("in/README.md")
-//
-//    val uppercaseRDD = textFileRDD.map(line=>line.toUpperCase)
-//    for (elem <- uppercaseRDD.take(3)) {
-//      print(elem)
-//    }
+  val textFileRDD=sc.textFile("in/README.md")
 
+    //这个length就等于你的核心数，它启动了几个partion!
+    //textFileRDD.partitions.length
+
+    //以每一行作为参数，每一行的值进行返回，map==> 一对一
+  /*  val uppercaseRDD = textFileRDD.map(line=>line.split(" "))
+    for (elem <- uppercaseRDD.take(3)) {
+      println(elem)
+    }*/
+
+
+    val uppercaseRDD = textFileRDD.flatMap(line=>line.split(" "))
+    for (elem <- uppercaseRDD.take(3)) {
+      println(elem)
+    }
 
 
    // val textFileRDD=sc.textFile("/sparkdata2")
@@ -80,10 +99,10 @@ object learnTextFile {
 
 
     //intersection 交集
-    val rdd1 = sc.parallelize(Seq((1,"jan",2016),(3,"nov",2014), (16,"feb",2014)))
-    val rdd2 = sc.parallelize(Seq((5,"dec",2014),(1,"jan",2016),(16,"feb",2015)))
-    val comman = rdd1.intersection(rdd2)
-    comman.foreach(println)
+//    val rdd1 = sc.parallelize(Seq((1,"jan",2016),(3,"nov",2014), (16,"feb",2014)))
+//    val rdd2 = sc.parallelize(Seq((5,"dec",2014),(1,"jan",2016),(16,"feb",2015)))
+//    val comman = rdd1.intersection(rdd2)
+//    comman.foreach(println)
 
 
 
