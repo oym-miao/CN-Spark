@@ -21,7 +21,8 @@ import scala.Tuple2;
  * Typical Hours
  * Annual Salary
  * Hourly Rate
- * 根据Department字段对数据进行分组，然后我们将首先根据salary排序，然后根据firstName排序。
+ * 根据Department字段对数据进行分组（如果这里不需要分组，那么就不需要分区器了），然后我们将首先根据salary排序，然后根据firstName排序。
+ * 其实上面的这个需求用sparkSQL的窗口函数就能实现
  * @author Brave
  *
  */
@@ -43,8 +44,9 @@ public class SecondarySortDriver2 {
 				}
 		});
 		
-		
-		
+		//repartitionAndSortWithinPartitions 它传递我们的分区器，根据我们为key实现的Comparable接口，从而实现对数据进行排序,边分区边排序
+		//如果分区数的数量比部门数少，那么就会出现多个部门被分布到同一个分区里面，如果是用hashcode的话
+		//这里的分区是多少 可以计算出有多少个部门就设置多少个分区，是动态设置的，一个部门一个分区，边分区边排序
 		JavaPairRDD<Employee_Key, Employee_Value> output = pair.repartitionAndSortWithinPartitions(new CustomEmployeePartitioner(50));
 		for (Tuple2<Employee_Key, Employee_Value> data : output.collect()) {
 			System.out.println(data._1.getDepartment() + " " + data._1.getSalary() + " " + data._1.getName()+ data._2.getJobTitle() + " " + data._2.getLastName());

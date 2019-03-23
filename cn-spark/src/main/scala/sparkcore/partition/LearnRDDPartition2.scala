@@ -35,13 +35,13 @@ object LearnRDDPartition2 {
       *    2.2从hdfs读取数据生成RDD，没有指定分区数，则默认分区规则为：rdd的分区数 = max(hdfs文件的block数,sc.defaultMinPartitions)
       * 3、通过已有RDD产生新的RDD，新RDD的分区数遵循遗传特性。将表格。
       **/
-    conf.setMaster("local[4]")
+    conf.setMaster("local[*]")
     val sc =new SparkContext(conf)
     sc.setLogLevel("ERROR")
-//    println("sc.defaultParallelism: "+sc.defaultParallelism)
-//    val rdd = sc.parallelize(1 to 100)
-//    println("rdd.partitions.length:"+rdd.partitions.length)
-//    println("rdd.partitions.size:"+rdd.partitions.size)
+    println("sc.defaultParallelism: "+sc.defaultParallelism)
+    val rdd = sc.parallelize(1 to 100)
+    println("rdd.partitions.length:"+rdd.partitions.length)
+    println("rdd.partitions.size:"+rdd.partitions.size)
 
 //    val rdd=sc.textFile("in/spark-2.2.0-bin-hadoop2.7.tgz")
 //    println("rdd.partitions.length:"+rdd.partitions.length)

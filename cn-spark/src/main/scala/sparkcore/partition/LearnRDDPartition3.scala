@@ -16,8 +16,13 @@ object LearnRDDPartition3 {
     //在前面4个分区的情况下，使用分区器分为两个分区，并输出。不同分区器的输出内容
     val pairRDDp4=rdd.map(num =>(num,num))
 //    pairRDDp4.saveAsTextFile("out/hashPartition4")
-    pairRDDp4.partitionBy(new HashPartitioner(4)).saveAsTextFile("out/hashPartition2")
-//    pairRDDp4.coalesce(2).saveAsTextFile("out/hashPartition22")
-    pairRDDp4.coalesce(6).saveAsTextFile("out/hashPartition6")
+    //合并分区
+    pairRDDp4.partitionBy(new HashPartitioner(6)).saveAsTextFile("out/hashPartition2")
+    println("Partitioner:"+pairRDDp4.partitioner)
+
+    //    pairRDDp4.coalesce(2).saveAsTextFile("out/hashPartition22")
+    //合并分区 coalesce方法只能用来减少分区数量，不能用来增加分区数量
+    //repartition方法可以用来减少分区数量，也可以用来增加分区数量
+    //pairRDDp4.coalesce(6).saveAsTextFile("out/hashPartition6")
   }
 }

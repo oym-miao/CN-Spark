@@ -15,9 +15,13 @@ object LearnSparkHDFS {
     val sc =new SparkContext(conf)
 
     /**
-      * 在向HDFS写入数据时，当前RDD的分区数，就是HDFS上的文件数。
+      * 在向HDFS写入数据时，当前RDD的分区数，就是HDFS上的文件数。 之所以hdfs上面有很多小文件，是因为用多个分区写的
       * 为了避免HDFS上生成大量的小文件，可以对RDD进行reparation，然后再saveAsTextFile。
       * 集群运行时  这个路径应该是Linux上的路径。真实项目中，这个路径应该是HDFS上路径
+      *
+      * hdfs上面不建议存小文件，会增加namenode管理元数据的压力
+      * 一般来说spark节点跟hdfs节点也就是计算节点跟存储节点会部署在同一台机器，这样就可以避免网络传输
+      *
       */
 
     //将本地文件保存到本地指定的目录

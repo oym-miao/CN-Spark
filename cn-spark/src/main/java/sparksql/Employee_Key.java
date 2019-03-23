@@ -45,6 +45,8 @@ public class Employee_Key implements Comparable<Employee_Key>,Serializable{
 
 
 	public int compareTo(Employee_Key emp1) {
+		//在这里实现二次排序
+
 //		System.out.println("emp1.getSalary:"+emp1.getSalary()+",this.getSalary()"+this.getSalary());
 		//先按salary排序
 		int compare = (int) emp1.getSalary() - (int) this.getSalary();

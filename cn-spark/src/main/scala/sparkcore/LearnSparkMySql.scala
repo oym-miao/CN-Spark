@@ -30,8 +30,10 @@ object LearnSparkMySql {
       JdbcUtils.free(pstmt, conn)
     })
 
+    //foreachPartition这种方式性能更优写，不用每一条数据都创建一个链接，而是给一个partition创建一个链接
     mapRDD.foreachPartition(partitions =>{
-
+      //1.遍历每一个partion,而每一个partion里面有多条记录，那么我每一个partition创建一个connection,而这个connection就可以往里面插入多条记录
+      //2.一个partition是在一个task里面运行的，而一个task肯定是在一个excutor里面运行的，所以它是在一台机器上运行的，就不会出现网络传输
       val conn =JdbcUtils.getConnection()
       var pstmt :PreparedStatement= null
       partitions.foreach(lineSize =>{
