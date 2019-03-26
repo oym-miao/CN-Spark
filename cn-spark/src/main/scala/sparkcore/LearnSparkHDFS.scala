@@ -10,7 +10,8 @@ object LearnSparkHDFS {
     conf.setAppName("LearnSparkHDFS")
    //conf.setMaster("local[3]")
 
-   conf.setMaster("spark://miao.com:7077")
+    //注意，这里不能这么设置，这是设置成standalone模式，提交的时候yarn 模式就无效了
+  // conf.setMaster("spark://oym.com:7077")
 
     val sc =new SparkContext(conf)
 
@@ -30,10 +31,13 @@ object LearnSparkHDFS {
 
     //StorageLevel
 
+
+
     //将Linux上的文件保存到hdfs上面,注意这个文件在每个节点都要有，并且路径一致
-    val textFileRDD=sc.textFile("/home/oym/apps/people.json")
-    println(textFileRDD.count())
-    textFileRDD.map(line => line.toUpperCase()).repartition(3).saveAsTextFile("hdfs://miao.com:8082/sparkdata5")
+   // val textFileRDD=sc.textFile("/opt/modules/testdata/people.json") //这么写会报错！！ 说input path 不存在hdfs://ns:/opt/modules...,改成下面那个路径即可
+    val textFileRDD=sc.textFile("file:///opt/modules/testdata/people.json")
+    println("上传文件的count():===========>"+textFileRDD.count())
+    textFileRDD.map(line => line.toUpperCase()).repartition(3).saveAsTextFile("hdfs://oym.com:8082/sparkdata5")
 
 
 

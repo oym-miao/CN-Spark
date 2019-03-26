@@ -23,7 +23,7 @@ limitations under the License.
 
         <property>
                 <name>javax.jdo.option.ConnectionURL</name>
-                <value>jdbc:mysql://192.168.91.101:3306/db01?createDatabaseIfNotExist=true&amp;useSSL=false&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;maxReconnects=10</value>
+                <value>jdbc:mysql://oym2.com:3306/db01?createDatabaseIfNotExist=true&amp;useSSL=false&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;maxReconnects=10</value>
         </property>
 
 
@@ -63,14 +63,14 @@ limitations under the License.
     <!--hive元数据服务的地址-->
     <property>
         <name>hive.metastore.uris</name>
-        <value>thrift://192.168.91.100:9083</value>
+        <value>thrift://oym2.com:9083</value>
     </property>
 
     <!-- #hive数据存储在hdfs上的目录-->
 
     <property>
         <name>hive.metastore.warehouse.dir</name>
-        <value>hdfs://192.168.91.100:8082/user/hive/warehouse</value>
+        <value>hdfs://oym2.com:8082/user/hive/warehouse</value>
         <description>location of default database for the warehous</description>
     </property>
 

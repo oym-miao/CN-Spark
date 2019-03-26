@@ -32,25 +32,25 @@
 
          <property>
                 <name>dfs.namenode.rpc-address.ns.nn1</name>
-                <value>192.168.91.100:8082</value>
+                <value>oym.com:8082</value>
         </property>
 
 
          <property>
                 <name>dfs.namenode.rpc-address.ns.nn2</name>
-                <value>192.168.91.101:8082</value>
+                <value>oym2.com:8082</value>
         </property>
 
 
         <!--外部访问 -->
          <property>
                 <name>dfs.namenode.http-address.ns.nn1</name>
-                <value>192.168.91.100:50070</value>
+                <value>oym.com:50070</value>
         </property>
 
           <property>
                 <name>dfs.namenode.http-address.ns.nn2</name>
-                <value>192.168.91.101:50070</value>
+                <value>oym2.com:50070</value>
         </property>
 
 
@@ -58,7 +58,7 @@
         <!--指定日志节点的机器以及端口号跟命名空间 -->
           <property>
                 <name>dfs.namenode.shared.edits.dir</name>
-                <value>qjournal://192.168.91.100:8485;192.168.91.101:8485;oym3.com:8485/ns</value>
+                <value>qjournal://oym.com:8485;oym2.com:8485;oym3.com:8485/ns</value>
         </property>
 
         <!-- 创建日志节点存储的位置,这里记得去创建一下这个路径 -->

@@ -17,7 +17,7 @@ object LearnSparkMySql {
 //    conf.setMaster("local[*]")
 
     val sc =new SparkContext(conf)
-    val textFileRDD=sc.textFile("hdfs://miao.com:9000/sparkdata5")
+    val textFileRDD=sc.textFile("hdfs://oym.com:9000/sparkdata5")
     val mapRDD=textFileRDD.map(line => line.size)
     //第一种方式
     mapRDD.foreach(lineSize => {

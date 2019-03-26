@@ -24,7 +24,7 @@ object learnTextFile {
 //    sc.setLogLevel("ERROR")
 
 
-  val textFileRDD=sc.textFile("in/README.md")
+  //val textFileRDD=sc.textFile("in/README.md")
 
     //这个length就等于你的核心数，它启动了几个partion!
     //textFileRDD.partitions.length
@@ -36,39 +36,10 @@ object learnTextFile {
     }*/
 
 
-    val uppercaseRDD = textFileRDD.flatMap(line=>line.split(" "))
-    for (elem <- uppercaseRDD.take(3)) {
-      println(elem)
-    }
-
-
-   // val textFileRDD=sc.textFile("/sparkdata2")
-//    var i=0
-//    val mapRDD=textFileRDD.map(line => {
-//      i=i+1
-//      (line, line.size)
-//    })
-
-    //    println("count:"+count)
-//    println("i:"+i)
-  //  val count=textFileRDD.count()
-
-//    val acc=sc.longAccumulator("counterAcc")
-//    val mapRDD=textFileRDD.map(line => {
-//      acc.add(1)
-//      //println(acc.value)
-//      (line, line.size)
-//    })
-//    mapRDD.cache()
-//    val count=mapRDD.count()
-   // println("count:"+count)
-//    println("acc.value:"+acc.value)
-//    println("********************")
-//    mapRDD.cache()
-//    val count2=mapRDD.count()
-//    println("count:"+count2)
-//    println("acc.value:"+acc.value)
-
+//    val uppercaseRDD = textFileRDD.flatMap(line=>line.split(" "))
+//    for (elem <- uppercaseRDD.take(3)) {
+//      println(elem)
+//    }
 
 
 //    println(mapRDD.getStorageLevel.description)

@@ -21,7 +21,8 @@
 
 
 
-	<!--  <property>
+	<!--
+	 <property>
             <name>fs.defaultFS</name>
             <value>hdfs://192.168.91.101:8082</value>
         </property>
@@ -34,7 +35,7 @@
 
 	<property>
 		<name>fs.default.name</name>
-		<value>hdfs://192.168.91.100:8082</value>
+		<value>hdfs://oym.com:8082</value>
 	</property>
 
 
@@ -47,7 +48,7 @@
         <!--zookeeper机器上的节点以及端口号-->
          <property>
             <name>ha.zookeeper.quorum</name>
-            <value>192.168.91.100:2181,192.168.91.101:2181,192.168.91.102:2181</value>
+            <value>oym.com:2181,oym2.com:2181,oym3.com:2181</value>
         </property>
 
 	<!--namenode启动不起来配置 -->
