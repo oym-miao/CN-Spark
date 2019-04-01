@@ -35,7 +35,7 @@
 
 	<property>
 		<name>fs.default.name</name>
-		<value>hdfs://oym.com:8082</value>
+		<value>hdfs://oym2.com:8082</value>
 	</property>
 
 

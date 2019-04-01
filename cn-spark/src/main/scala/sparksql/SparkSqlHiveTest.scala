@@ -39,7 +39,8 @@ object SparkSqlHiveTest {
       .appName("Spark Hive Exampl")
       //  .config("hive.metastore.uris","thrift://oym2.com:9083")
       // .config("hive.metastore.warehouse.dir","hdfs://oym.com:8082/user/hive/warehouse")
-      .config("spark.sql.warehouse.dir", "hdfs://192.168.91.100:8082/user/hive/warehouse")
+     // .config("spark.sql.warehouse.dir", "hdfs://192.168.91.100:8082/user/hive/warehouse")
+    .config("spark.sql.warehouse.dir", "hdfs://oym2.com:8082/user/hive/warehouse")
       // .config("hive.metastore.warehouse.dir","hdfs://192.168.91.101:8082/user/hive/warehouse")
 
       .enableHiveSupport() //启用对hive的支持
@@ -47,18 +48,20 @@ object SparkSqlHiveTest {
     // spark.sparkContext.setLogLevel("ERROR")
     import spark.implicits._
     import spark.sql
-    //  sql("show tables").show()
-    // sql("show databases").show()
-    // sql("CREATE TABLE IF NOT EXISTS src10(key INT, value STRING ) USING hive")
-     //  sql("LOAD DATA INPATH 'hdfs://ns/testdata/resource/kv1.txt' INTO TABLE src10")
+
+     sql("show tables").show()
+     sql("show databases").show()
+     //sql("CREATE TABLE IF NOT EXISTS src12(key INT, value STRING ) USING hive")
+    //sql("LOAD DATA INPATH 'hdfs://ns/testdata/kv1.txt' INTO TABLE src12")
+    //  sql("LOAD DATA INPATH 'hdfs://oym2.com:8082/testdata/kv1.txt' INTO TABLE src12")
 
     //sql("select * from student05").show()
-    // sql("select * from student06").show()
-
+     // sql("select * from student06").show()
+//    spark.sql("show tables").show()
 
     //使用HiveQL语言查询
-   // sql("SELECT * FROM src9").show()
-    //sql("show tables").show()
+  // sql("SELECT * FROM src12").show()
+  // sql("show tables").show()
 
 /*
       +---+-------+

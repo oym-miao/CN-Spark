@@ -23,7 +23,8 @@ object ZipProblemSolution {
     
     //1、读取zips.json文件为DataFrame，并将列名_id重命名为zip
     val zipDF = spark.read
-                     .json("file:///D:/scalaworkspace/SparkPrepareScala/zips.json")
+                   //  .json("file:///D:/scalaworkspace/SparkPrepareScala/zips.json")
+                     .json("in/zips.json")
                      .withColumnRenamed("_id", "zip")
                      
     zipDF.printSchema()
@@ -39,23 +40,24 @@ object ZipProblemSolution {
 //      Zips2(zip,city,loc.mkString(","),pop,state)
 //    }).show()
     
-    val zipRDD=zipDF.rdd.map ( row => {
-      val zip:String=row.getAs("zip")
-      val city:String=row.getAs("city")
-      val loc:Seq[Double]=row.getAs("loc")
-      val pop:Long=row.getAs("pop")
-      val state:String=row.getAs("state")
-      println("loc:"+loc.mkString(","))
-      Zips2(zip,city,loc.mkString(","),pop,state)
-    } )
-    val zipRDDDS=zipRDD.toDS();
-    zipRDDDS.show()
+//    val zipRDD=zipDF.rdd.map ( row => {
+//      val zip:String=row.getAs("zip")
+//      val city:String=row.getAs("city")
+//      val loc:Seq[Double]=row.getAs("loc")
+//      val pop:Long=row.getAs("pop")
+//      val state:String=row.getAs("state")
+//      println("loc:"+loc.mkString(","))
+//      Zips2(zip,city,loc.mkString(","),pop,state)
+//    } )
+//    val zipRDDDS=zipRDD.toDS();
+//    zipRDDDS.show()
 //    
     //2、创建名为Zips的case class或者javaBean，用于将第一步创建的DF转换为DS
     //注意别忘记导入语句：import spark.implicits._
     val zipDS=zipDF.as[Zips]
     //3、显示DS中的数据
     zipDS.show(3)
+    //因为后面有sql语句，所以这里必须要先创建表！！！
     zipDS.createOrReplaceTempView("zips")
     
 //    //1、Spark Sql:以降序显示人口超过40000的 states, zip, cities,pop
@@ -79,6 +81,9 @@ object ZipProblemSolution {
 //    spark.sql("SELECT COUNT(zip), SUM(pop), city FROM zips WHERE state = 'CA' GROUP BY city ORDER BY SUM(pop) DESC").show(3)
 ////    zipDS.select("zip", "pop", "city").filter('state === "CA").groupBy("city").agg(sum("pop"), count("zip"),min("pop"),max("pop")).orderBy(desc("sum(pop)")).show(3)
 //    zipDS.filter('state === "CA").select("zip", "pop", "city").groupBy("city").agg(sum("pop").alias("popsum"), count("zip").alias("zipcount")).orderBy(desc("popsum")).show(3)
+
+
+
     /**
      * 
      * UDF的定义及使用
@@ -94,32 +99,36 @@ object ZipProblemSolution {
      * val largerThanUDF = udf((z: String, number: Long) => z.toLong>number)
      * zipDS.select(col("city"),zipToLongUDF(col("zip")).as("zipToLong"),largerThanUDF(col("zip"),lit("99923")).alias("largerThan")).orderBy(desc("zipToLong")).show();
      */
-    println("********zipToLong******")
-    spark.udf.register("zipToLong", (z:String) => z.toLong)
-    spark.udf.register("largerThan", (z:String,number:Long) => z.toLong>number)
+//    println("********zipToLong******")
+//    spark.udf.register("zipToLong", (z:String) => z.toLong)
+//    spark.udf.register("largerThan", (z:String,number:Long) => z.toLong>number)
 //    spark.sql("SELECT city, zipToLong(zip) as zip_to_long FROM zips ORDER BY zip_to_long DESC").show()
 //    spark.sql("SELECT city, zipToLong(zip) as zip_to_long,largerThan(zip,99923) as largerThan FROM zips ORDER BY zip_to_long DESC").show()
-//    val zipToLongUDF=udf((z:String) => z.toLong)
+
+     //下面这个注册方式不能用于sql里面，会找不到这个函数
+    //val zipToLongUDF=udf((z:String) => z.toLong)
 //    val largerThanUDF = udf((z: String, number: Long) => z.toLong>number)
 //    println("********zipToLongUDF******")
 //    zipDS.select(col("city"),zipToLongUDF(col("zip")).as("zipToLong"),largerThanUDF(col("zip"),lit("99923")).as("largerThan")).orderBy(desc("zipToLong")).show();
+
+
     /**
      * Spark On Hive:
      * Spark On Hive与Hive On Spark
      * Spark On Hive:
      * 1、是否需要启动hive?--不需要
      * 2、是否需要启动HDFS？---需要
-     * 3、是否需要启动YARN？--不需要
+     * 3、是否需要启动YARN？--不需要 但是提交基于spark on yarn任务的时候是需要启动的
      * 4、如何配置Spark On Hive？
      * 5、Spark On Hive的内部机制是什么？
      * 6、Spark On Hive实战：com.brave.prepare.SparkSqlHiveTest
      * 7、将作业数据保存到hive中
      */
     //5、把结果保存到hive中
-    zipDS.write.mode(SaveMode.Overwrite).saveAsTable("hive_zips_table")
-    spark.sql("show tables").show()
-    spark.sql("select * from hive_zips_table").show(2)
-    spark.close()
+//    zipDS.write.mode(SaveMode.Overwrite).saveAsTable("hive_zips_table")
+//    spark.sql("show tables").show()
+//    spark.sql("select * from hive_zips_table").show(2)
+//    spark.close()
   }
   
   def zipToLong(z:String)=z.toLong
