@@ -44,15 +44,17 @@ public class TxcCompute {
             }
         });//(hphm,(tgsj,kkbh))
 
-        //groupByKey
+        //这个地方不能用reduceByKey,因为reduceBykey是聚合过了，groupBykey是聚合的集合，这里因为每个元素需要单独处理
         JavaPairRDD<String, Iterable<Tuple2>> cltgxxGroupByKey = cltgxxPairRDD.groupByKey();
 
         JavaRDD<Tuple2<String, Tuple2<String,String>>> tuple2RDD = cltgxxGroupByKey.flatMap(new FlatMapFunction<Tuple2<String, Iterable<Tuple2>>, Tuple2<String, Tuple2<String,String>>>() {
             @Override
             public Iterator<Tuple2<String, Tuple2<String,String>>> call(Tuple2<String, Iterable<Tuple2>> inIterTuple2) throws Exception {
+
                 List<Tuple2<String, Tuple2<String,String>>> result = new ArrayList<Tuple2<String, Tuple2<String,String>>>();
                 //iterable转List
                 List<Tuple2> list = IteratorUtils.toList(inIterTuple2._2.iterator());
+                System.out.println("list: "+list.toString());
                 for (int i = 0; i < list.size() - 2; i++) {
                     StringBuilder sbTime = new StringBuilder();
                     StringBuilder sbKkbh = new StringBuilder();

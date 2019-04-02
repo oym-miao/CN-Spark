@@ -58,9 +58,13 @@ public class TpcCompute {
                 return v1+"&"+v2;
             }
         });//(车牌号：唯一标识_卡口经度坐标_卡口纬度坐标_通过时间&唯一标识_卡口经度坐标_卡口纬度坐标_通过时间&......)
-        //创建集合累加器
+
+
+        //创建集合累加器,因为车牌号是分布式在集群中进行计算的，需要从集群中将上面的结果进行收集起来
+        //这个累加器是在2.0以后才出现的
         CollectionAccumulator<String> acc = sc.sc().collectionAccumulator();
         //使用foreach算子过滤数据，将符合条件的数据放到累加器中
+        //这里之所以没用foreachPartition是因为没有和数据库进行交互
         reduceRDD.foreach(new VoidFunction<Tuple2<String,String>>() {
             private static final long serialVersionUID = 1L;
             @Override
@@ -78,10 +82,10 @@ public class TpcCompute {
                         String value2=values[k];
                         String[] items1=value1.split("_");
                         String[] items2=value2.split("_");
-                        String id1=items1[0];
-                        String lon1=items1[1];
-                        String lat1=items1[2];
-                        String tgsj1=items1[3];
+                        String id1=items1[0];  //id
+                        String lon1=items1[1];  //经度
+                        String lat1=items1[2];  //纬度
+                        String tgsj1=items1[3];  //通过时间
 
                         String id2=items2[0];
                         String lon2=items2[1];
@@ -96,6 +100,7 @@ public class TpcCompute {
                             // 卡口时间相差值，卡口距离值====>速度大于180km/h，则为套牌车。或者
                             // 卡口时间相差小于等于5分钟，同时两车卡口距离大于10KM(即速度大于120km/h)，则为套牌车
 //                            acc.add(id1+"_"+id2);//符合条件的添加到累加器中
+
                             Dataset<Row> resultDF = spark.sql("select hphm,clpp,clys,tgsj,kkbh from t_cltgxx where id in (" + id1 + "," + id2 + ")");
                             resultDF.show();
                             Dataset<Row> resultDF2 = resultDF.withColumn("jsbh", functions.lit(new Date().getTime()))
