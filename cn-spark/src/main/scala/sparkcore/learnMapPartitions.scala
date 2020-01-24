@@ -11,7 +11,9 @@ object learnMapPartitions {
     val sc =new SparkContext(conf)
     val textFileRDD=sc.textFile("in/README.md")
 
-    //map每一个分区，然后再map分区中的每一个元素
+    //mapPartitions可以对一个RDD中所有的分区进行遍历
+    //map每一个分区，然后再map分区中的每一个元素,这个partition是一个集合
+    //优点
     val mapPartitionRDD=textFileRDD.mapPartitions(partition => {
       partition.map(line =>line.toUpperCase)
     })

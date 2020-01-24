@@ -15,8 +15,11 @@ public class learnCountByValueJava {
         JavaSparkContext jsc=new JavaSparkContext(conf);
         JavaRDD<String> textFileRDD=jsc.textFile("in/README.md");
 
+
+
         JavaRDD<String> flatMapRDD=textFileRDD.flatMap(new FlatMapFunction<String, String>() {
 
+            @Override
             public Iterator<String> call(String s) throws Exception {
                 return Arrays.asList(s.split(" ")).iterator();
             }
