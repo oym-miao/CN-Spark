@@ -11,7 +11,7 @@ object LearnSortByKey {
 
     val sc = new SparkContext(conf)
 
-    val dataRdd: RDD[(Int, String)] = sc.makeRDD(List((1,"张三"),(2,"李四"),(4,"赵钱"),(3,"王五")))
+    val dataRdd: RDD[(Int, String)] = sc.makeRDD(List((1,"张三"),(2,"李四"),(4,"赵钱"),(4,"赵钱"),(3,"王五"),(5,"孙李")))
 
     val sortByKeyRDD: RDD[(Int, String)] = dataRdd.sortByKey(true)
 
@@ -19,7 +19,7 @@ object LearnSortByKey {
 
     /**
       * 输出结果
-      * (1,张三)(2,李四)(3,王五)(4,赵钱)
+      * (1,张三)(2,李四)(3,王五)(4,赵钱)(4,赵钱)(5,孙李)
       */
 
 
