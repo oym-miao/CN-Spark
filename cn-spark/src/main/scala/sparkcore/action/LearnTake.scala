@@ -17,6 +17,11 @@ object LearnTake {
 
     takeData.foreach(print)
 
+    /**
+      * 输出结果
+      * 254
+      */
+
   }
 
 
