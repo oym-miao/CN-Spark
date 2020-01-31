@@ -15,6 +15,7 @@ object LearnCogroup {
 
     val rddTwo: RDD[(Int, Int)] = sc.parallelize(Array((1,4),(2,5),(3,6),(4,6)))
 
+    //需求：创建两个pairRDD，并将key相同的数据聚合到一个迭代器
     val cogroupRDD: RDD[(Int, (Iterable[String], Iterable[Int]))] = rddOne.cogroup(rddTwo)
 
     cogroupRDD.collect().foreach(print)
