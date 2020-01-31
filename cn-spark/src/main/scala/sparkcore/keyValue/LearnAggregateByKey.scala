@@ -33,6 +33,19 @@ object LearnAggregateByKey {
     aggregateByKeyRdd.collect().foreach(print)
 
 
+    val dataRDDTwo: RDD[(String, Int)] = sc.parallelize(List(("a",1),("a",2),("a",3),("a",4),("a",5),("a",6),("a",7),("a",8),("a",9),("a",10)),2)
+
+
+    val aggrateTwo: RDD[(String, Int)] = dataRDDTwo.aggregateByKey(10)(_+_,_+_)
+
+    aggrateTwo.collect().foreach(print)
+
+    /**
+      * 输出结果
+      * (a,75)
+      */
+
+
   }
 
 

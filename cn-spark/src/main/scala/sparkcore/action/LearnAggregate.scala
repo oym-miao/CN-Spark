@@ -11,7 +11,7 @@ object LearnAggregate {
 
     val sc = new SparkContext(conf)
 
-    val dataRDD: RDD[Int] = sc.makeRDD(1 to 3,2)
+    val dataRDD: RDD[Int] = sc.makeRDD(1 to 10,2)
 
     val aggreateData: Int = dataRDD.aggregate(0)(_+_,_+_)
 
@@ -19,8 +19,19 @@ object LearnAggregate {
 
     /**
       * 输出结果
-      * 6
+      * 55
       */
+
+    val dataRDDTwo: RDD[Int] = sc.makeRDD(1 to 10,2)
+    //注意aggregate 分区间还会加一个10
+    val aggreateDataTwo: Int = dataRDDTwo.aggregate(10)(_+_,_+_)
+
+    print(aggreateDataTwo)
+    /**
+      * 输出结果
+      * 85
+      */
+
 
   }
 
